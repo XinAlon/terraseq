@@ -22,4 +22,4 @@ jobs:
         go-version: '1.20'
 
     - name: Build
-      run: cd src & go build terraseq.go
+      run: cd src && go build terraseq.go
