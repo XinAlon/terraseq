@@ -23,6 +23,8 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 
 	if outFormat == "23andme" {
 		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
+	} else if outFormat == "ftdnav2" {
+		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
 	} else {
@@ -58,6 +60,10 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 				outputLine := fmt.Sprintf("%s\t%s\t%s\t%s\t%s\n", rsid, chromosome, position, allele1, allele2)
 				output.WriteString(outputLine)
 			}
+			if outFormat == "ftdnav2" {
+				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
 		}
 	}
 
@@ -85,6 +91,8 @@ func threeandme(inFile, outFile, outFormat string) error {
 		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
+	} else if outFormat == "ftdnav2" {
+		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
 		return fmt.Errorf("Unsupported output format: %s", outFormat)
 	}
@@ -121,6 +129,81 @@ func threeandme(inFile, outFile, outFormat string) error {
 			}
 			if outFormat == "ancestry" {
 				outputLine := fmt.Sprintf("%s\t%s\t%s\t%s\t%s\n", rsid, chromosome, position, allele1, allele2)
+				output.WriteString(outputLine)
+			}
+			if outFormat == "ftdnav2" {
+				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("Error reading input file: %v", err)
+	}
+	return nil
+}
+
+func FTDNA(inFile, outFile, outFormat string) error {
+	inputF, err := os.Open(inFile)
+	if err != nil {
+		return fmt.Errorf("Error opening input file: %v", err)
+	}
+	defer inputF.Close()
+
+	output, err := os.Create(outFile)
+	if err != nil {
+		return fmt.Errorf("Error creating output file: %v", err)
+	}
+	defer output.Close()
+
+
+	if outFormat == "23andme" {
+		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
+	} else if outFormat == "ancestry" {
+		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
+	} else if outFormat == "ftdnav2" {
+		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
+	} else {
+		return fmt.Errorf("Unsupported output format: %s", outFormat)
+	}
+
+	scanner := bufio.NewScanner(inputF)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, "#") || line == "" {
+			continue
+		}
+
+		if line == "RSID,CHROMOSOME,POSITION,RESULT" {
+			continue
+		}
+
+		fields := strings.Split(line, ",")
+		if len(fields) >= 4 {
+			rsid := fields[0]
+			chromosome := fields[1]
+			position := fields[2]
+			genotype := fields[3]
+
+			allele1 := string(genotype[0])
+			var allele2 string
+			if len(genotype) > 1 {
+				allele2 = string(genotype[1])
+			} else {
+				allele2 = "-"
+			}
+
+			if outFormat == "23andme" {
+				outputLine := fmt.Sprintf("%s\t%s\t%s\t%s\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
+			if outFormat == "ancestry" {
+				outputLine := fmt.Sprintf("%s\t%s\t%s\t%s\t%s\n", rsid, chromosome, position, allele1, allele2)
+				output.WriteString(outputLine)
+			}
+			if outFormat == "ftdnav2" {
+				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
 				output.WriteString(outputLine)
 			}
 		}
@@ -178,6 +261,8 @@ func main() {
 		err = AncestryDNA(*inFile, *outFile, *outFormat)
 	} else if *inFormat == "23andme" {
 		err = threeandme(*inFile, *outFile, *outFormat)
+	} else if *inFormat == "ftdnav2" {
+		err = FTDNA(*inFile, *outFile, *outFormat)
 	} else {
 		fmt.Println("Unsupported format conversion")
 		return
