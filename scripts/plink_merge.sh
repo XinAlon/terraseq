@@ -14,7 +14,7 @@ for file in "$DIR"/*.bed; do
 done
 
 if [ -f "$merge_file" ]; then
-    echo "Running plink --bmerge with $merge_file"
+    echo "Merging ..."
     ./plink --merge-list "$merge_file" --out "$DIR/merged_output"
 else
     echo "List file $merge_file does not exist. No files to merge."
