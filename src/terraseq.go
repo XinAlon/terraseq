@@ -8,6 +8,9 @@ import (
 	"flag"
 )
 
+var Green = "\033[32m"
+var Reset = "\033[0m"
+
 func AncestryDNA(inFile, outFile, outFormat string) error {
 	inputF, err := os.Open(inFile)
 	if err != nil {
@@ -23,7 +26,7 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 
 	if outFormat == "23andme" {
 		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
-	} else if outFormat == "ftdnav2" {
+	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
@@ -64,6 +67,10 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
 				output.WriteString(outputLine)
 			}
+			if outFormat == "ftdnav1" || outFormat == "myheritage" {
+				outputLine := fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
 		}
 	}
 
@@ -91,7 +98,7 @@ func threeandme(inFile, outFile, outFormat string) error {
 		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
-	} else if outFormat == "ftdnav2" {
+	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
 		return fmt.Errorf("Unsupported output format: %s", outFormat)
@@ -135,6 +142,10 @@ func threeandme(inFile, outFile, outFormat string) error {
 				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
 				output.WriteString(outputLine)
 			}
+			if outFormat == "ftdnav1" || outFormat == "myheritage" {
+				outputLine := fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
 		}
 	}
 
@@ -162,7 +173,7 @@ func FTDNA(inFile, outFile, outFormat string) error {
 		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
-	} else if outFormat == "ftdnav2" {
+	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
 		return fmt.Errorf("Unsupported output format: %s", outFormat)
@@ -206,6 +217,10 @@ func FTDNA(inFile, outFile, outFormat string) error {
 				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
 				output.WriteString(outputLine)
 			}
+			if outFormat == "ftdnav1" || outFormat == "myheritage" {
+				outputLine := fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
 		}
 	}
 
@@ -233,7 +248,7 @@ func MyHeritage(inFile, outFile, outFormat string) error {
 		output.WriteString("# rsid\tchromosome\tposition\tgenotype\n")
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
-	} else if outFormat == "ftdnav2" {
+	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
 		return fmt.Errorf("Unsupported output format: %s", outFormat)
@@ -278,6 +293,10 @@ func MyHeritage(inFile, outFile, outFormat string) error {
 			}
 			if outFormat == "ftdnav2" {
 				outputLine := fmt.Sprintf("%s,%s,%s,%s\n", rsid, chromosome, position, genotype)
+				output.WriteString(outputLine)
+			}
+			if outFormat == "ftdnav1" || outFormat == "myheritage" {
+				outputLine := fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n", rsid, chromosome, position, genotype)
 				output.WriteString(outputLine)
 			}
 		}
@@ -350,5 +369,5 @@ func main() {
 		return
 	}
 
-	fmt.Println("Conversion completed successfully")
+	fmt.Println(Green + "[INFO]" + Reset + " Conversion completed successfully")
 }
