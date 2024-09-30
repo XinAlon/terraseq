@@ -10,6 +10,7 @@ import (
 
 var Green = "\033[32m"
 var Reset = "\033[0m"
+var Red = "\033[31m"
 
 func AncestryDNA(inFile, outFile, outFormat string) error {
 	inputF, err := os.Open(inFile)
@@ -351,23 +352,27 @@ func main() {
 
 	var err error
 	if *inFormat == "ancestry" {
+		fmt.Println(Green + "[INFO]" + Reset + " Converting...")
 		err = AncestryDNA(*inFile, *outFile, *outFormat)
 	} else if *inFormat == "23andme" {
+		fmt.Println(Green + "[INFO]" + Reset + " Converting...")
 		err = threeandme(*inFile, *outFile, *outFormat)
 	} else if *inFormat == "ftdnav2" {
+		fmt.Println(Green + "[INFO]" + Reset + " Converting...")
 		err = FTDNA(*inFile, *outFile, *outFormat)
 	} else if *inFormat == "ftdnav1" || *inFormat == "myheritage" {
+		fmt.Println(Green + "[INFO]" + Reset + " Converting...")
 		err = MyHeritage(*inFile, *outFile, *outFormat)
 	} else {
-		fmt.Println("Unsupported format conversion")
+		fmt.Println(Red + "[Warning]" + Reset + " Format not supported.")
 		return
 	}
 
 	// Handle conversion errors
 	if err != nil {
-		fmt.Printf("Error during conversion: %v\n", err)
+		fmt.Printf(Red + "[Warning]" + Reset + " Error during conversion: %v\n", err)
 		return
 	}
 
-	fmt.Println(Green + "[INFO]" + Reset + " Conversion completed successfully")
+	fmt.Println(Green + "[INFO]" + Reset + " Conversion completed successfully!")
 }
