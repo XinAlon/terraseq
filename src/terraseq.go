@@ -15,13 +15,13 @@ var Red = "\033[31m"
 func AncestryDNA(inFile, outFile, outFormat string) error {
 	inputF, err := os.Open(inFile)
 	if err != nil {
-		return fmt.Errorf("Error opening input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error opening input file: %v", err)
 	}
 	defer inputF.Close()
 
 	output, err := os.Create(outFile)
 	if err != nil {
-		return fmt.Errorf("Error creating output file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error creating output file: %v", err)
 	}
 	defer output.Close()
 
@@ -32,7 +32,7 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 	} else if outFormat == "ancestry" {
 		output.WriteString("# rsid\tchromosome\tposition\tallele1\tallele2\n")
 	} else {
-		return fmt.Errorf("Unsupported output format: %s", outFormat)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Unsupported output format: %s", outFormat)
 	}
 
 	scanner := bufio.NewScanner(inputF)
@@ -76,7 +76,7 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return fmt.Errorf("Error reading input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error reading input file: %v", err)
 	}
 	return nil
 }
@@ -84,13 +84,13 @@ func AncestryDNA(inFile, outFile, outFormat string) error {
 func threeandme(inFile, outFile, outFormat string) error {
 	inputF, err := os.Open(inFile)
 	if err != nil {
-		return fmt.Errorf("Error opening input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error opening input file: %v", err)
 	}
 	defer inputF.Close()
 
 	output, err := os.Create(outFile)
 	if err != nil {
-		return fmt.Errorf("Error creating output file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error creating output file: %v", err)
 	}
 	defer output.Close()
 
@@ -102,7 +102,7 @@ func threeandme(inFile, outFile, outFormat string) error {
 	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
-		return fmt.Errorf("Unsupported output format: %s", outFormat)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Unsupported output format: %s", outFormat)
 	}
 
 	scanner := bufio.NewScanner(inputF)
@@ -151,7 +151,7 @@ func threeandme(inFile, outFile, outFormat string) error {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return fmt.Errorf("Error reading input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error reading input file: %v", err)
 	}
 	return nil
 }
@@ -159,13 +159,13 @@ func threeandme(inFile, outFile, outFormat string) error {
 func FTDNA(inFile, outFile, outFormat string) error {
 	inputF, err := os.Open(inFile)
 	if err != nil {
-		return fmt.Errorf("Error opening input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error opening input file: %v", err)
 	}
 	defer inputF.Close()
 
 	output, err := os.Create(outFile)
 	if err != nil {
-		return fmt.Errorf("Error creating output file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error creating output file: %v", err)
 	}
 	defer output.Close()
 
@@ -177,7 +177,7 @@ func FTDNA(inFile, outFile, outFormat string) error {
 	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
-		return fmt.Errorf("Unsupported output format: %s", outFormat)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Unsupported output format: %s", outFormat)
 	}
 
 	scanner := bufio.NewScanner(inputF)
@@ -226,7 +226,7 @@ func FTDNA(inFile, outFile, outFormat string) error {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return fmt.Errorf("Error reading input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error reading input file: %v", err)
 	}
 	return nil
 }
@@ -234,13 +234,13 @@ func FTDNA(inFile, outFile, outFormat string) error {
 func MyHeritage(inFile, outFile, outFormat string) error {
 	inputF, err := os.Open(inFile)
 	if err != nil {
-		return fmt.Errorf("Error opening input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error opening input file: %v", err)
 	}
 	defer inputF.Close()
 
 	output, err := os.Create(outFile)
 	if err != nil {
-		return fmt.Errorf("Error creating output file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error creating output file: %v", err)
 	}
 	defer output.Close()
 
@@ -252,7 +252,7 @@ func MyHeritage(inFile, outFile, outFormat string) error {
 	} else if outFormat == "ftdnav2" || outFormat == "ftdnav1" || outFormat == "myheritage" {
 		output.WriteString("RSID,CHROMOSOME,POSITION,RESULT\n")
 	} else {
-		return fmt.Errorf("Unsupported output format: %s", outFormat)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Unsupported output format: %s", outFormat)
 	}
 
 	scanner := bufio.NewScanner(inputF)
@@ -304,7 +304,7 @@ func MyHeritage(inFile, outFile, outFormat string) error {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return fmt.Errorf("Error reading input file: %v", err)
+		return fmt.Errorf(Red + "[Warning]" + Reset + " Error reading input file: %v", err)
 	}
 	return nil
 }
@@ -338,7 +338,7 @@ func main() {
 	convertCmd.Parse(os.Args[2:])
 
 	if *inFile == "" || *inFormat == "" || *outFile == "" || *outFormat == "" {
-		fmt.Println("Missing Flags.")
+		fmt.Println(Red + "[Warning]" + Reset + " Missing Flags.")
 		fmt.Println()
 		fmt.Println("Usage: terraseq convert --inFile --inFormat --outFile --outFormat")
 		fmt.Println()
