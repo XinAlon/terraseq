@@ -1,5 +1,25 @@
 # terraseq
 
+### **Installation**
+
+#### **Windows**
+```bash
+# downloading the lastest version
+curl -O -L https://github.com/XinAlon/terraseq/releases/latest/download/terraseq.exe
+# running the file
+./terraseq.exe
+```
+
+#### **Linux**
+```bash
+# downloading the lastest version
+wget https://github.com/XinAlon/terraseq/releases/latest/download/terraseq
+# make the file executable
+chmod +x terraseq
+# running the file
+./terraseq
+```
+
 | Format | Usage |
 | --- | --- |
 | 23andMe | `23andme` |
