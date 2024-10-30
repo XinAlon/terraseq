@@ -219,7 +219,7 @@ func getDefaultGenotype(template TemplateRecord, outFormat string) (string, stri
 			return "--", "--", "--"
 		case "ancestry":
 			// Ancestry format might prefer explicit reference alleles
-			return allele1, allele2, rawGenotype
+			return "0", "0", rawGenotype
 		default:
 			return allele1, allele2, rawGenotype
 	}
