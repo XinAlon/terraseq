@@ -295,7 +295,7 @@ func Parse23andMe(filename string) ParseResult {
 		if len(fields) >= 4 {
 			genotype := fields[3]
 			allele1 := string(genotype[0])
-			allele2 := "-"
+			allele2 := allele1
 			if len(genotype) > 1 {
 				allele2 = string(genotype[1])
 			}
@@ -348,7 +348,7 @@ func ParseFTDNA(filename string) ParseResult {
 		if len(fields) >= 4 {
 			genotype := fields[3]
 			allele1 := string(genotype[0])
-			allele2 := "-"
+			allele2 := allele1
 			if len(genotype) > 1 {
 				allele2 = string(genotype[1])
 			}
@@ -405,7 +405,7 @@ func ParseMyHeritage(filename string) ParseResult {
 		if len(fields) >= 4 {
 			genotype := fields[3]
 			allele1 := string(genotype[0])
-			allele2 := "-"
+			allele2 := allele1
 			if len(genotype) > 1 {
 				allele2 = string(genotype[1])
 			}
