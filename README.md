@@ -1,5 +1,10 @@
 # terraseq
 
+1. [Installation](#installation)
+   - [Windows](#windows)
+   - [Linux](#linux)
+
+---
 ### **Installation**
 
 #### **Windows**
@@ -19,6 +24,8 @@ chmod +x terraseq
 # running the file
 ./terraseq
 ```
+
+---
 
 | Format | Usage |
 | --- | --- |
