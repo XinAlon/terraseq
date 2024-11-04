@@ -505,7 +505,7 @@ func convert(inFile, inFormat, outFile, outFormat string) error {
 func main() {
 	// Create a new flag set
 	convertCmd := flag.NewFlagSet("convert", flag.ExitOnError)
-	alignCmd := flag.NewFlagSet("allign", flag.ExitOnError)
+	alignCmd := flag.NewFlagSet("align", flag.ExitOnError)
 
 	// Define flags for the convert command
 	inFile := convertCmd.String("inFile", "", "Path to input file")
@@ -519,18 +519,29 @@ func main() {
 	alignOutFormat := alignCmd.String("outFormat", "", "Format of output file")
 	alignFile := alignCmd.String("alignFile", "", "Path to your alignment file")
 
+	// Help flags
+	convertHelp := convertCmd.Bool("help", false, "Show convert command help")
+	convertHelpShort := convertCmd.Bool("h", false, "Show convert command help")
+	alignHelp := alignCmd.Bool("help", false, "Show align command help")
+	alignHelpShort := alignCmd.Bool("h", false, "Show align command help")
+
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: terraseq [command]")
 		fmt.Println()
 		fmt.Println("Commands:")
-		fmt.Println("   convert\t     Converts a DNA-file to another format.")
-		fmt.Println("   align\t     Aligns a DNA-fle with a reference.")
+		fmt.Println("   convert\t     Converts a DNA file to another format.")
+		fmt.Println("   align\t     Aligns DNA sequences with a reference.")
 		return
 	}
 
 	switch os.Args[1] {
 		case "convert":
 			convertCmd.Parse(os.Args[2:])
+
+			if *convertHelp || *convertHelpShort {
+				printConvertHelp()
+				return
+			}
 
 			var missingFlags []string
 			if *inFile == "" {
@@ -546,16 +557,14 @@ func main() {
 				missingFlags = append(missingFlags, "--outFormat")
 			}
 
-			if len(missingFlags) > 0 {
-				fmt.Println("Usage: terraseq convert --inFile --inFormat --outFile --outFormat")
+			if len(missingFlags) > 0 && len(missingFlags) < 4 {
+				printConvertHelp()
 				fmt.Println()
 				fmt.Println(Red + "[Warning]" + Reset + " Missing Flags: \n", strings.Join(missingFlags, ", "))
 				fmt.Println()
-				fmt.Println("Flags:")
-				fmt.Println("   --inFile\t        Path to your input file.")
-				fmt.Println("   --inFormat\t        Format of your input file.")
-				fmt.Println("   --outFile\t        Path to your output file.")
-				fmt.Println("   --outFormat\t        Format of your output file.")
+				return
+			} else if len(missingFlags) == 4 {
+				printConvertHelp()
 				return
 			}
 
@@ -570,8 +579,12 @@ func main() {
 		case "align":
 			alignCmd.Parse(os.Args[2:])
 
-			var missingFlags []string
+			if *alignHelp || *alignHelpShort {
+				printAlignHelp()
+				return
+			}
 
+			var missingFlags []string
 			if *alignFile == "" {
 				missingFlags = append(missingFlags, "--alignFile")
 			}
@@ -588,17 +601,14 @@ func main() {
 				missingFlags = append(missingFlags, "--outFormat")
 			}
 
-			if len(missingFlags) > 0 {
-				fmt.Println("Usage: terraseq convert --alignFile --inFile --inFormat --outFile --outFormat")
+			if len(missingFlags) > 0 && len(missingFlags) < 5 {
+				printAlignHelp()
 				fmt.Println()
 				fmt.Println(Red + "[Warning]" + Reset + " Missing Flags: \n", strings.Join(missingFlags, ", "))
 				fmt.Println()
-				fmt.Println("Flags:")
-				fmt.Println("   --alignFile\t        Path to your alignment file.")
-				fmt.Println("   --inFile\t        Path to your input file.")
-				fmt.Println("   --inFormat\t        Format of your input file.")
-				fmt.Println("   --outFile\t        Path to your output file.")
-				fmt.Println("   --outFormat\t        Format of your output file.")
+				return
+			} else if len(missingFlags) == 5 {
+				printAlignHelp()
 				return
 			}
 
@@ -613,8 +623,38 @@ func main() {
 			fmt.Println("Usage: terraseq [command]")
 			fmt.Println()
 			fmt.Println("Commands:")
-			fmt.Println("   convert\t     Converts a DNA-file to another format.")
+			fmt.Println("   convert\t     Converts a DNA file to another format.")
 			fmt.Println("   align\t     Aligns DNA sequences with a reference.")
 			return
 	}
 }
+
+func printConvertHelp() {
+	fmt.Println("usage: terraseq convert [--inFile INFILE] [--inFormat INFORMAT]")
+	fmt.Println("                        [--outFile OUTFILE] [--outFormat OUTFORMAT]")
+	fmt.Println()
+	fmt.Println("Parse optional command line arguments.")
+	fmt.Println()
+	fmt.Println("options:")
+	fmt.Println("  -h, --help                Display this help message and exit.")
+	fmt.Println("  --inFile INFILE           Specify the path to the input file (e.g., input.txt).")
+	fmt.Println("  --inFormat INFORMAT       Define the format of the input file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).")
+	fmt.Println("  --outFile OUTFILE         Specify the path for the output file (e.g., output.txt).")
+	fmt.Println("  --outFormat OUTFORMAT     Define the format of the output file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).")
+}
+
+func printAlignHelp() {
+	fmt.Println("usage: terraseq align [--alignFile ALIGNFILE] [--inFile INFILE] [--inFormat INFORMAT]")
+	fmt.Println("                      [--outFile OUTFILE] [--outFormat OUTFORMAT]")
+	fmt.Println()
+	fmt.Println("Parse optional command line arguments.")
+	fmt.Println()
+	fmt.Println("options:")
+	fmt.Println("  -h, --help                Display this help message and exit.")
+	fmt.Println("  --alignFile ALIGNFILE     Specify the path to the alignment file (e.g., alignment.bim).")
+	fmt.Println("  --inFile INFILE           Specify the path to the input file (e.g., input.txt).")
+	fmt.Println("  --inFormat INFORMAT       Define the format of the input file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).")
+	fmt.Println("  --outFile OUTFILE         Specify the path for the output file (e.g., output.txt).")
+	fmt.Println("  --outFormat OUTFORMAT     Define the format of the output file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).")
+}
+
