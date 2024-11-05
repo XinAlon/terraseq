@@ -4,7 +4,7 @@
    - [Windows](#windows)
    - [Linux](#linux)
 2. [Usage](#usage)
-3. Command Options
+
 ---
 ### **Installation**
 
