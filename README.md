@@ -6,7 +6,7 @@
 2. [Usage](#usage)
 
 ---
-### **Installation**
+## **Installation**
 
 #### **Windows**
 ```bash
@@ -27,9 +27,9 @@ chmod +x terraseq
 ```
 
 ---
-### **Usage**
+## **Usage**
 
-#### Example: Converting file to another format.
+### Example: Converting file to another format.
 ```bash
 terraseq convert --inFile myfile.txt --inFormat ancestry --outFormat 23andme --outFile myfile_converted.txt
 ```
@@ -52,7 +52,7 @@ options:
 ```
 
 
-#### Example: Extracting only snps from a .bim (plinkbed) file.
+### Example: Extracting only snps from a .bim (plinkbed) file.
 ```bash
 terraseq align --alignFile 1240K.bim --inFile myfile.txt --inFormat ftdnav1 --outFormat 23andme --outFile myfile_1240K.txt
 ```
