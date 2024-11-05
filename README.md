@@ -54,7 +54,7 @@ options:
 
 ### Example: Extracting only snps from a .bim (plinkbed) file.
 ```bash
-terraseq align --alignFile 1240K.bim --inFile myfile.txt --inFormat ftdnav1 --outFormat 23andme --outFile myfile_1240K.txt
+terraseq align --alignFile 1240K.bim --inFile myfile.csv --inFormat ftdnav1 --outFormat 23andme --outFile myfile_1240K.txt
 ```
 #### Command Options: align
 ```bash
