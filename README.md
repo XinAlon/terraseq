@@ -11,7 +11,7 @@
 #### **Windows**
 ```bash
 # downloading the lastest version
-curl -O -L https://github.com/XinAlon/terraseq/releases/latest/download/terraseq.exe
+curl -O -L https://github.com/enelsr/terraseq/releases/latest/download/terraseq.exe
 # running the file
 ./terraseq.exe
 ```
@@ -19,7 +19,7 @@ curl -O -L https://github.com/XinAlon/terraseq/releases/latest/download/terraseq
 #### **Linux**
 ```bash
 # downloading the lastest version
-wget https://github.com/XinAlon/terraseq/releases/latest/download/terraseq
+wget https://github.com/enelsr/terraseq/releases/latest/download/terraseq
 # make the file executable
 chmod +x terraseq
 # running the file
