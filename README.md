@@ -37,18 +37,22 @@ terraseq convert --inFile myfile.txt --inFormat ancestry --outFormat 23andme --o
 ```bash
 terraseq convert -h
 ```
-```bash
-usage: terraseq convert [--inFile INFILE] [--inFormat INFORMAT]
-                        [--outFile OUTFILE] [--outFormat OUTFORMAT]
+```
+usage: terraseq convert [-i|--inFile FILE] [-f|--inFormat FORMAT]
+                      [-o|--outFile FILE] [-t|--outFormat FORMAT]
 
 Parse optional command line arguments.
 
 options:
-  -h, --help                Display this help message and exit.
-  --inFile INFILE           Specify the path to the input file (e.g., input.txt).
-  --inFormat INFORMAT       Define the format of the input file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).
-  --outFile OUTFILE         Specify the path for the output file (e.g., output.txt).
-  --outFormat OUTFORMAT     Define the format of the output file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).
+  -h, --help                  Display this help message and exit
+  -i, --inFile FILE           Specify the path to the input file
+                              (e.g., input.txt)
+  -f, --inFormat FORMAT       Define the input file format
+                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)
+  -o, --outFile FILE          Specify the path for the output file
+                              (e.g., output.txt)
+  -t, --outFormat FORMAT      Define the output file format
+                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)
 ```
 
 
@@ -60,17 +64,22 @@ terraseq align --alignFile 1240K.bim --inFile myfile.csv --inFormat ftdnav1 --ou
 ```bash
 terraseq align -h
 ```
-```bash
-usage: terraseq align [--alignFile ALIGNFILE] [--inFile INFILE] [--inFormat INFORMAT]
-                      [--outFile OUTFILE] [--outFormat OUTFORMAT]
+```
+usage: terraseq align [-a|--alignFile FILE] [-i|--inFile FILE] [-f|--inFormat FORMAT]
+                      [-o|--outFile FILE] [-t|--outFormat FORMAT]
 
 Parse optional command line arguments.
 
 options:
-  -h, --help                Display this help message and exit.
-  --alignFile ALIGNFILE     Specify the path to the alignment file (e.g., alignment.bim).
-  --inFile INFILE           Specify the path to the input file (e.g., input.txt).
-  --inFormat INFORMAT       Define the format of the input file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).
-  --outFile OUTFILE         Specify the path for the output file (e.g., output.txt).
-  --outFormat OUTFORMAT     Define the format of the output file (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage).
+  -h, --help                  Display this help message and exit
+  -a, --alignFile FILE        Specify the path to the alignment file
+                              (e.g., alignment.bim)
+  -i, --inFile FILE           Specify the path to the input file
+                              (e.g., input.txt)
+  -f, --inFormat FORMAT       Define the format of the input file
+                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)
+  -o, --outFile FILE          Specify the path for the output file
+                              (e.g., output.txt)
+  -t, --outFormat FORMAT      Define the format of the output file
+                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)
 ```
