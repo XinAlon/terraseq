@@ -175,10 +175,9 @@ func flipping(dnaRecord DNARecord, template TemplateRecord, outFormat string) (s
 			default:
 				return "--", "--", "--"
 		}
-	} else if dnaRecord.Allele1 != dnaRecord.Allele2 && ((dnaRecord.Allele1 != template.ReferenceA1 && dnaRecord.Allele1 != template.ReferenceA2) || dnaRecord.Allele2 != template.ReferenceA1 && dnaRecord.Allele2 != template.ReferenceA2) {
+	} else if dnaRecord.Allele1 != dnaRecord.Allele2 {
 		rawGenotype := template.ReferenceA1 + template.ReferenceA2
 		return template.ReferenceA1, template.ReferenceA2, rawGenotype
-
 	} else if dnaRecord.Allele1 == dnaRecord.Allele2 {
 		if dnaRecord.Allele1 != template.ReferenceA1 && dnaRecord.Allele1 != template.ReferenceA2 {
 			switch dnaRecord.Allele1 {
