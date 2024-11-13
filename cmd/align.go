@@ -94,9 +94,9 @@ func AlignHelp(cmd *cobra.Command, args []string) {
 	fmt.Fprintln(cmd.OutOrStdout(), "                              (e.g., input.txt)")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -f, --inFormat FORMAT       Define the format of the input file")
 	fmt.Fprintln(cmd.OutOrStdout(), "                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)")
-	fmt.Fprintln(cmd.OutOrStdout(), "  -t, --outFormat FORMAT      Define the format of the output file")
-	fmt.Fprintln(cmd.OutOrStdout(), "                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -o, --outFile FILE          Specify the path for the output file")
 	fmt.Fprintln(cmd.OutOrStdout(), "                              (e.g., output.txt)")
-	fmt.Fprintln(cmd.OutOrStdout(), "  --flip                      Flips the alleles in accordance with the reference"")
+	fmt.Fprintln(cmd.OutOrStdout(), "  -t, --outFormat FORMAT      Define the format of the output file")
+	fmt.Fprintln(cmd.OutOrStdout(), "                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)")
+	fmt.Fprintln(cmd.OutOrStdout(), "  --flip                      Flips the alleles in accordance with the reference")
 }
