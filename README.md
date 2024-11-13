@@ -66,7 +66,7 @@ terraseq align -h
 ```
 ```
 usage: terraseq align [-a|--alignFile FILE] [-i|--inFile FILE] [-f|--inFormat FORMAT]
-                      [-o|--outFile FILE] [-t|--outFormat FORMAT]
+                      [-o|--outFile FILE] (-t|--outFormat FORMAT) (--flip)
 
 Parse optional command line arguments.
 
@@ -82,4 +82,5 @@ options:
                               (e.g., output.txt)
   -t, --outFormat FORMAT      Define the format of the output file
                               (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)
+  --flip                      Flips the alleles in accordance with the reference
 ```

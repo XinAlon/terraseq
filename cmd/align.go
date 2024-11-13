@@ -9,6 +9,8 @@ import (
 
 var alignFile, outFormat string
 
+var flip bool
+
 var alignCmd = &cobra.Command{
 	Use:   "align",
 	Short: "Aligns DNA sequences with a reference.",
@@ -32,11 +34,12 @@ var alignCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(alignCmd)
 
-	alignCmd.Flags().StringVarP(&inFile, "inFile", "i", "", "Path to input file")
-	alignCmd.Flags().StringVarP(&inFormat, "inFormat", "f", "", "Format of input file")
-	alignCmd.Flags().StringVarP(&outFile, "outFile", "o", "", "Path to output file")
-	alignCmd.Flags().StringVarP(&outFormat, "outFormat", "t", "23andme", "Format of output file")
-	alignCmd.Flags().StringVarP(&alignFile, "alignFile", "a", "", "Path to your alignment file")
+	alignCmd.Flags().StringVarP(&inFile, "inFile", "i", "", "")
+	alignCmd.Flags().StringVarP(&inFormat, "inFormat", "f", "", "")
+	alignCmd.Flags().StringVarP(&outFile, "outFile", "o", "", "")
+	alignCmd.Flags().StringVarP(&outFormat, "outFormat", "t", "23andme", "")
+	alignCmd.Flags().StringVarP(&alignFile, "alignFile", "a", "", "")
+	alignCmd.Flags().BoolVar(&flip, "flip", false, "")
 	alignCmd.MarkFlagRequired("inFile")
 	alignCmd.MarkFlagRequired("inFormat")
 	alignCmd.MarkFlagRequired("outFile")
@@ -71,7 +74,7 @@ func align(inFile, inFormat, outFile, outFormat, alignFile string) error {
 		return fmt.Errorf("error parsing template file: %v", err)
 	}
 
-	return internal.AlignDNA(result.Data, templateRecords, outFile, outFormat)
+	return internal.AlignDNA(result.Data, templateRecords, outFile, outFormat, flip)
 }
 
 func AlignHelp(cmd *cobra.Command, args []string) {
@@ -79,7 +82,7 @@ func AlignHelp(cmd *cobra.Command, args []string) {
 	fmt.Fprintln(cmd.OutOrStdout(), "https://github.com/enelsr/terraseq")
 	fmt.Fprintln(cmd.OutOrStdout(), "")
 	fmt.Fprintln(cmd.OutOrStdout(), "usage: terraseq align [-a|--alignFile FILE] [-i|--inFile FILE] [-f|--inFormat FORMAT]")
-	fmt.Fprintln(cmd.OutOrStdout(), "                      [-o|--outFile FILE] [-t|--outFormat FORMAT]")
+	fmt.Fprintln(cmd.OutOrStdout(), "                      [-o|--outFile FILE] (-t|--outFormat FORMAT) (--flip)")
 	fmt.Fprintln(cmd.OutOrStdout(), "")
 	fmt.Fprintln(cmd.OutOrStdout(), "Parse optional command line arguments.")
 	fmt.Fprintln(cmd.OutOrStdout(), "")
@@ -95,4 +98,5 @@ func AlignHelp(cmd *cobra.Command, args []string) {
 	fmt.Fprintln(cmd.OutOrStdout(), "                              (e.g., output.txt)")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -t, --outFormat FORMAT      Define the format of the output file")
 	fmt.Fprintln(cmd.OutOrStdout(), "                              (options: 23andme, ancestry, ftdnav1, ftdnav2, myheritage)")
+	fmt.Fprintln(cmd.OutOrStdout(), "  --flip                      Flips the alleles in accordance with the reference")
 }

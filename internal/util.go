@@ -64,7 +64,7 @@ func getDefaultGenotype(template TemplateRecord, outFormat string) (string, stri
 	}
 }
 
-func AlignDNA(data DNAData, templateRecords []TemplateRecord, outFile string, outFormat string) error {
+func AlignDNA(data DNAData, templateRecords []TemplateRecord, outFile string, outFormat string, flip bool) error {
 	// Create a map for quick lookup of DNA records by RSID
 	dnaMap := make(map[string]DNARecord)
 	for _, record := range data.Records {
@@ -101,19 +101,38 @@ func AlignDNA(data DNAData, templateRecords []TemplateRecord, outFile string, ou
 		if dnaRecord, exists := dnaMap[template.RSID]; exists {
 			matchedSnps++
 			// Use the actual DNA record data
-			switch outFormat {
-				case "23andme":
-					outputLine = fmt.Sprintf("%s\t%s\t%s\t%s\n",
-								 template.RSID, template.Chromosome, template.Position, dnaRecord.RawGenotype)
-				case "ancestry":
-					outputLine = fmt.Sprintf("%s\t%s\t%s\t%s\t%s\n",
-								 template.RSID, template.Chromosome, template.Position, dnaRecord.Allele1, dnaRecord.Allele2)
-				case "ftdnav2":
-					outputLine = fmt.Sprintf("%s,%s,%s,%s\n",
-								 template.RSID, template.Chromosome, template.Position, dnaRecord.RawGenotype)
-				case "ftdnav1", "myheritage":
-					outputLine = fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n",
-								 template.RSID, template.Chromosome, template.Position, dnaRecord.RawGenotype)
+
+			if flip {
+				flipAllele1, flipAllele2, flipGenotype := flipping(dnaRecord, template, outFormat)
+				switch outFormat {
+					case "23andme":
+						outputLine = fmt.Sprintf("%s\t%s\t%s\t%s\n",
+									 template.RSID, template.Chromosome, template.Position, flipGenotype)
+					case "ancestry":
+						outputLine = fmt.Sprintf("%s\t%s\t%s\t%s\t%s\n",
+									 template.RSID, template.Chromosome, template.Position, flipAllele1, flipAllele2)
+					case "ftdnav2":
+						outputLine = fmt.Sprintf("%s,%s,%s,%s\n",
+									 template.RSID, template.Chromosome, template.Position, flipGenotype)
+					case "ftdnav1", "myheritage":
+						outputLine = fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n",
+									 template.RSID, template.Chromosome, template.Position, flipGenotype)
+				}
+			} else {
+				switch outFormat {
+					case "23andme":
+						outputLine = fmt.Sprintf("%s\t%s\t%s\t%s\n",
+									 template.RSID, template.Chromosome, template.Position, dnaRecord.RawGenotype)
+					case "ancestry":
+						outputLine = fmt.Sprintf("%s\t%s\t%s\t%s\t%s\n",
+									 template.RSID, template.Chromosome, template.Position, dnaRecord.Allele1, dnaRecord.Allele2)
+					case "ftdnav2":
+						outputLine = fmt.Sprintf("%s,%s,%s,%s\n",
+									 template.RSID, template.Chromosome, template.Position, dnaRecord.RawGenotype)
+					case "ftdnav1", "myheritage":
+						outputLine = fmt.Sprintf("\"%s\",\"%s\",\"%s\",\"%s\"\n",
+									 template.RSID, template.Chromosome, template.Position, dnaRecord.RawGenotype)
+				}
 			}
 		} else {
 			// Use default values for missing SNPs
@@ -146,3 +165,35 @@ func AlignDNA(data DNAData, templateRecords []TemplateRecord, outFile string, ou
 	return nil
 }
 
+func flipping(dnaRecord DNARecord, template TemplateRecord, outFormat string) (string, string, string) {
+	if (dnaRecord.Allele1 != "C" && dnaRecord.Allele1 != "G" && dnaRecord.Allele1 != "T" && dnaRecord.Allele1 != "A") || (dnaRecord.Allele2 != "C" && dnaRecord.Allele2 != "G" && dnaRecord.Allele2 != "T" && dnaRecord.Allele2 != "A") {
+		switch outFormat {
+			case "23andme", "ftdnav2", "ftdnav1", "myheritage":
+				return "--", "--", "--"
+			case "ancestry":
+				return "0", "0", "0"
+			default:
+				return "--", "--", "--"
+		}
+	} else if dnaRecord.Allele1 != dnaRecord.Allele2 {
+		rawGenotype := template.ReferenceA1 + template.ReferenceA2
+		return template.ReferenceA1, template.ReferenceA2, rawGenotype
+	} else if dnaRecord.Allele1 == dnaRecord.Allele2 {
+		if dnaRecord.Allele1 != template.ReferenceA1 && dnaRecord.Allele1 != template.ReferenceA2 {
+			switch dnaRecord.Allele1 {
+				case "C":
+					return "G", "G", "GG"
+				case "G":
+					return "C", "C", "CC"
+				case "A":
+					return "T", "T", "TT"
+				case "T":
+					return "A", "A", "AA"
+			}
+		}
+		return dnaRecord.Allele1, dnaRecord.Allele2, dnaRecord.RawGenotype
+	} else {
+		return dnaRecord.Allele1, dnaRecord.Allele2, dnaRecord.RawGenotype
+	}
+
+}
