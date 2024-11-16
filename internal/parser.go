@@ -6,6 +6,7 @@ import (
 	"bufio"
 	"strings"
 	"strconv"
+	"path/filepath"
 )
 
 func ParseAncestryDNA(filename string) ParseResult {
@@ -214,9 +215,15 @@ func ParseMyHeritage(filename string) ParseResult {
 }
 
 func ParseTemplate(filename string) ([]TemplateRecord, error) {
+	// Check file extension
+	ext := strings.ToLower(filepath.Ext(filename))
+	if ext != ".bim" && ext != ".snp" {
+		return nil, fmt.Errorf("unsupported file extension: %s. Only .bim and .snp files are supported", ext)
+	}
+
 	file, err := os.Open(filename)
 	if err != nil {
-		return nil, fmt.Errorf("error opening template file: %v", err)
+		return nil, fmt.Errorf("error opening alignFile: %v", err)
 	}
 	defer file.Close()
 
@@ -230,15 +237,35 @@ func ParseTemplate(filename string) ([]TemplateRecord, error) {
 		}
 
 		fields := strings.Fields(line)
-		if len(fields) >= 6 {
+
+		if ext == ".bim" {
+			if len(fields) < 6 {
+				continue // Skip invalid lines
+			}
 			value, err := parseScientificNotation(fields[2])
 			if err != nil {
 				continue // Skip lines with invalid scientific notation
 			}
-
 			record := TemplateRecord{
 				Chromosome:  fields[0],
 				RSID:       fields[1],
+				Value:      value,
+				Position:   fields[3],
+				ReferenceA1: fields[4],
+				ReferenceA2: fields[5],
+			}
+			records = append(records, record)
+		} else { // .snp file
+			if len(fields) < 6 {
+				continue // Skip invalid lines
+			}
+			value, err := parseScientificNotation(fields[2])
+			if err != nil {
+				continue // Skip lines with invalid scientific notation
+			}
+			record := TemplateRecord{
+				Chromosome:  fields[1],
+				RSID:       fields[0],
 				Value:      value,
 				Position:   fields[3],
 				ReferenceA1: fields[4],
@@ -249,7 +276,7 @@ func ParseTemplate(filename string) ([]TemplateRecord, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("error reading template file: %v", err)
+		return nil, fmt.Errorf("error reading alignFile: %v", err)
 	}
 
 	return records, nil
