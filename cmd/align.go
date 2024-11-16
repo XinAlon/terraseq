@@ -89,7 +89,7 @@ func AlignHelp(cmd *cobra.Command, args []string) {
 	fmt.Fprintln(cmd.OutOrStdout(), "options:")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -h, --help                  Display this help message and exit")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -a, --alignFile FILE        Specify the path to the alignment file")
-	fmt.Fprintln(cmd.OutOrStdout(), "                              (e.g., alignment.bim)")
+	fmt.Fprintln(cmd.OutOrStdout(), "                              (e.g., 1240K.bim, 1240K.snp)")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -i, --inFile FILE           Specify the path to the input file")
 	fmt.Fprintln(cmd.OutOrStdout(), "                              (e.g., input.txt)")
 	fmt.Fprintln(cmd.OutOrStdout(), "  -f, --inFormat FORMAT       Define the format of the input file")
