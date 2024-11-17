@@ -73,7 +73,7 @@ Parse optional command line arguments.
 options:
   -h, --help                  Display this help message and exit
   -a, --alignFile FILE        Specify the path to the alignment file
-                              (e.g., alignment.bim)
+                              (e.g., 1240K.bim, 1240K.snp)
   -i, --inFile FILE           Specify the path to the input file
                               (e.g., input.txt)
   -f, --inFormat FORMAT       Define the format of the input file
